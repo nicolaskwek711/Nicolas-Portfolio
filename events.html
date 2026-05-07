@@ -349,19 +349,19 @@
         const categories = [
             {
                 key: 'concerts',
-                label: 'concerts',
+                label: 'MAD Grad Concert 2026',
                 images: Array.from({ length: 9 }, (_, i) =>
                     `images/Event Photography/Concerts/Image ${i + 1}.jpg`)
             },
             {
                 key: 'events',
-                label: 'events',
+                label: 'MAD GradShow 2026',
                 images: Array.from({ length: 11 }, (_, i) =>
                     `images/Event Photography/Events/Image ${i + 1}.jpg`)
             },
             {
                 key: 'sports',
-                label: 'sports',
+                label: 'Lion City Karate Championships 2025',
                 // Sports folder is missing Image 4
                 images: [1, 2, 3, 5, 6, 7, 8, 9].map(n =>
                     `images/Event Photography/Sports/Image ${n}.jpg`)
@@ -507,6 +507,13 @@
         document.getElementById('lb-prev').addEventListener('click',  (e) => { e.stopPropagation(); navigate(-1); });
         document.getElementById('lb-next').addEventListener('click',  (e) => { e.stopPropagation(); navigate(1); });
         lb.addEventListener('click', closeLightbox);
+
+        let touchStartX = 0;
+        lb.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+        lb.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+        });
 
         document.addEventListener('keydown', (e) => {
             if (!lb.classList.contains('open')) return;

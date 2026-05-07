@@ -21,134 +21,6 @@
             color: #000;
         }
 
-        .main-container {
-            width: 100%;
-            height: 100%;
-            min-height: 500px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .header-section {
-            padding-top: 5rem;
-            text-align: center;
-            width: 100%;
-            position: relative;
-            z-index: 20;
-        }
-
-        .main-title {
-            font-size: clamp(3.5rem, 10vw, 8rem);
-            line-height: 1;
-            font-style: italic;
-            cursor: default;
-            display: inline-block;
-        }
-
-        .bubble-char {
-            display: inline-block;
-            transition: font-weight 0.25s ease, color 0.25s ease;
-            font-weight: 300;
-            color: #bbb;
-        }
-
-        .bubble-char.dist-0 {
-            font-weight: 900;
-            color: #000;
-        }
-
-        .bubble-char.dist-1 {
-            font-weight: 600;
-            color: #444;
-        }
-
-        .bubble-char.dist-2 {
-            font-weight: 400;
-            color: #777;
-        }
-
-        .subtitle {
-            padding-top: 1rem;
-            font-size: clamp(1rem, 3vw, 2rem);
-            color: #999;
-        }
-
-        /* Physics canvas sits BEHIND the header */
-        .physics-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        /* Re-enable pointer events only on the matter canvas for dragging */
-        .physics-container canvas {
-            pointer-events: all;
-        }
-
-        .block {
-            position: absolute;
-            padding: 1.5rem 3.5rem;
-            border-radius: 9999px;
-            color: #fff;
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-weight: 600;
-            user-select: none;
-            pointer-events: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            transition: box-shadow 0.3s ease;
-        }
-
-
-        .block-about    { background: #2563eb; }
-        .block-work     { background: #E794DA; }
-        .block-contact  { background: #ff5941; }
-
-        .block-about.hovered    { box-shadow: 0 0 0 4px rgba(37,99,235,0.35),  0 0 30px 8px rgba(37,99,235,0.55); }
-        .block-work.hovered     { box-shadow: 0 0 0 4px rgba(231,148,218,0.45), 0 0 30px 8px rgba(231,148,218,0.65); }
-        .block-contact.hovered  { box-shadow: 0 0 0 4px rgba(255,89,65,0.4),    0 0 30px 8px rgba(255,89,65,0.6); }
-
-        .block .arrow {
-            width: 0.85em;
-            height: 0.85em;
-            stroke: rgba(255,255,255,0.9);
-            stroke-width: 2;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            flex-shrink: 0;
-        }
-
-        .logo {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
-            z-index: 100;
-        }
-
-        .logo img { height: 50px; }
-
-        @media (max-width: 768px) {
-            .header-section { padding-top: 3rem; }
-            .block { padding: 0.85rem 1.6rem; font-size: 1.05rem; gap: 0.4rem; }
-            .block .arrow { width: 0.8em; height: 0.8em; }
-            .logo { top: 1rem; left: 1rem; }
-            .logo img { height: 40px; }
-            .main-title { font-size: clamp(2.5rem, 13vw, 4rem); }
-            .subtitle { font-size: 1rem; padding-top: 0.5rem; }
-        }
-
-        @media (max-width: 420px) {
-            .block { padding: 0.7rem 1.3rem; font-size: 0.95rem; }
-        }
-
-        /* Aurora background */
         :root {
             --aurora-white: rgba(255,255,255,1);
             --aurora-transparent: rgba(255,255,255,0);
@@ -170,7 +42,6 @@
             z-index: 0;
             pointer-events: none;
             opacity: 0.5;
-            will-change: transform;
             background-image:
                 repeating-linear-gradient(100deg,
                     var(--aurora-white) 0%, var(--aurora-white) 7%,
@@ -205,29 +76,204 @@
             mix-blend-mode: difference;
             animation: aurora 60s linear infinite;
         }
+
+        /* ── Layout ── */
+        .main-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 6vh;
+            gap: 4rem;
+            position: relative;
+        }
+
+        .hero-header {
+            text-align: center;
+            z-index: 20;
+        }
+
+        .hero-body {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 3rem;
+            z-index: 20;
+            width: 100%;
+            padding: 0 3rem;
+        }
+
+        /* ── Title ── */
+        .main-title {
+            font-size: clamp(4rem, 10vw, 9rem);
+            line-height: 1;
+            font-style: italic;
+            cursor: default;
+            display: inline-block;
+            pointer-events: all;
+        }
+
+        .bubble-char {
+            display: inline-block;
+            transition: font-weight 0.25s ease, color 0.25s ease;
+            font-weight: 300;
+            color: #444;
+        }
+
+        .bubble-char.dist-0 { font-weight: 900; color: #000; }
+        .bubble-char.dist-1 { font-weight: 600; color: #222; }
+        .bubble-char.dist-2 { font-weight: 400; color: #555; }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 3vw, 2rem);
+            font-style: italic;
+            font-weight: 300;
+            color: #444;
+            letter-spacing: 0.02em;
+            margin-top: 0.4rem;
+        }
+
+        /* ── Side nav ── */
+        .side-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .left-nav  { align-items: flex-end;   justify-self: end;   align-self: stretch; justify-content: space-between; }
+        .right-nav { align-items: flex-start; justify-self: start; }
+
+        /* ── Buttons ── */
+        .block {
+            padding: 1.6rem 4rem;
+            border-radius: 9999px;
+            color: #fff;
+            font-size: clamp(1.6rem, 3vw, 2.6rem);
+            font-weight: 600;
+            user-select: none;
+            pointer-events: all;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .block:hover { transform: scale(1.05); }
+
+        .block-about   { background: #2563eb; }
+        .block-work    { background: #E794DA; }
+        .block-contact { background: #ff5941; }
+
+        .block-about:hover   { box-shadow: 0 0 0 4px rgba(37,99,235,0.35),  0 0 24px 6px rgba(37,99,235,0.5); }
+        .block-work:hover    { box-shadow: 0 0 0 4px rgba(231,148,218,0.45), 0 0 24px 6px rgba(231,148,218,0.6); }
+        .block-contact:hover { box-shadow: 0 0 0 4px rgba(255,89,65,0.4),   0 0 24px 6px rgba(255,89,65,0.55); }
+
+        .block .arrow {
+            width: 0.8em;
+            height: 0.8em;
+            stroke: rgba(255,255,255,0.9);
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* ── Globe ── */
+        #globe-canvas {
+            display: block;
+            flex-shrink: 0;
+        }
+
+        /* ── Connection lines SVG (full-page fixed overlay) ── */
+        #connection-svg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        /* ── Logo ── */
+        .logo {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            z-index: 100;
+        }
+
+        .logo img { height: 50px; mix-blend-mode: multiply; }
+
+        /* ── Mobile ── */
+        @media (max-width: 640px) {
+            html { overflow-y: auto; }
+            body { height: auto; min-height: 100svh; overflow-y: auto; }
+            .main-container { height: auto; min-height: 100svh; gap: 1.5rem; padding-top: 5vh; padding-bottom: 3rem; }
+            .main-title { font-size: clamp(2.5rem, 13vw, 4rem); }
+            .subtitle { font-size: clamp(0.9rem, 4.5vw, 1.5rem); }
+            .hero-body { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 0 1.5rem; }
+            #globe-canvas { order: -1; }
+            .left-nav { flex-direction: row; align-self: auto; justify-self: auto; justify-content: center; gap: 0.75rem; }
+            .right-nav { justify-self: auto; }
+            .block { padding: 0.8rem 1.5rem; font-size: clamp(0.95rem, 4vw, 1.2rem); }
+            #nav-about   { margin-top: 0 !important; }
+            #nav-contact { margin-bottom: 0 !important; }
+            #connection-svg { display: none; }
+            .logo { top: 1rem; left: 1rem; }
+            .logo img { height: 36px; }
+        }
     </style>
 </head>
 <body>
-    <di v class="main-container">
+    <div class="main-container">
         <div class="aurora-bg"></div>
+
         <div class="logo">
             <img src="images/NK Black Logo (No BG).png" alt="NK">
         </div>
 
-        <div class="header-section">
+        <!-- Full-page SVG for connection lines -->
+        <svg id="connection-svg"></svg>
+
+        <!-- Title -->
+        <div class="hero-header">
             <div class="main-title" id="bubble-title"></div>
             <p class="subtitle">visual storyteller</p>
         </div>
 
-        <div id="physics-world" class="physics-container">
-            <div id="block-about"    class="block block-about"><span>about</span><svg class="arrow" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-            <div id="block-work"     class="block block-work"><span>my portfolio</span><svg class="arrow" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-            <div id="block-contact"  class="block block-contact"><span>contact</span><svg class="arrow" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+        <!-- Globe row -->
+        <div class="hero-body">
+            <div class="side-nav left-nav">
+                <a href="about.html" id="nav-about" class="block block-about" style="margin-top: 1.5rem;">
+                    <span>about</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+                <a href="contact.html" id="nav-contact" class="block block-contact" style="margin-bottom: 4.5rem;">
+                    <span>contact</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+            </div>
+
+            <canvas id="globe-canvas"></canvas>
+
+            <div class="side-nav right-nav">
+                <a href="portfolio.html" id="nav-portfolio" class="block block-work">
+                    <span>my portfolio</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+            </div>
         </div>
     </div>
 
+    <!-- Bubble title effect -->
     <script>
-        // Bubble text
         const titleEl = document.getElementById('bubble-title');
         const text = 'nicolas kwek';
         let hoveredIndex = null;
@@ -235,19 +281,13 @@
         const spans = text.split('').map((char, idx) => {
             const span = document.createElement('span');
             span.className = 'bubble-char';
-            span.textContent = char === ' ' ? '\u00A0' : char;
-            span.addEventListener('mouseenter', () => {
-                hoveredIndex = idx;
-                updateClasses();
-            });
+            span.textContent = char === ' ' ? ' ' : char;
+            span.addEventListener('mouseenter', () => { hoveredIndex = idx; updateClasses(); });
             titleEl.appendChild(span);
             return span;
         });
 
-        titleEl.addEventListener('mouseleave', () => {
-            hoveredIndex = null;
-            updateClasses();
-        });
+        titleEl.addEventListener('mouseleave', () => { hoveredIndex = null; updateClasses(); });
 
         function updateClasses() {
             spans.forEach((span, idx) => {
@@ -260,144 +300,240 @@
         }
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/poly-decomp/0.3.0/decomp.min.js"></script>
+    <!-- D3 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Globe + connection lines -->
     <script>
-        const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Common } = Matter;
+        (() => {
+            const canvas = document.getElementById('globe-canvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
 
-        const container = document.getElementById('physics-world');
-        const width  = container.clientWidth;
-        const height = container.clientHeight;
+            const isMobile = window.innerWidth <= 640;
+            const GLOBE_SIZE = Math.round(Math.min(
+                window.innerWidth  * (isMobile ? 0.65 : 0.42),
+                window.innerHeight * (isMobile ? 0.38 : 0.60),
+                580
+            ));
+            const globeRadius = Math.round(GLOBE_SIZE * 0.46);
 
-        Common.setDecomp(window.decomp);
+            canvas.width  = GLOBE_SIZE * dpr;
+            canvas.height = GLOBE_SIZE * dpr;
+            canvas.style.width  = GLOBE_SIZE + 'px';
+            canvas.style.height = GLOBE_SIZE + 'px';
+            ctx.scale(dpr, dpr);
 
-        const engine = Engine.create();
-        engine.gravity.x = 0;
-        engine.gravity.y = 1;
+            const cx = GLOBE_SIZE / 2;
+            const cy = GLOBE_SIZE / 2;
 
-        const render = Render.create({
-            element: container,
-            engine: engine,
-            options: {
-                width,
-                height,
-                wireframes: false,
-                background: 'transparent'
+            const projection = d3.geoOrthographic()
+                .scale(globeRadius)
+                .translate([cx, cy])
+                .clipAngle(90);
+
+            const path = d3.geoPath().projection(projection).context(ctx);
+
+            // ── Dot generation ──────────────────────────────────────
+            function pointInPolygon(point, polygon) {
+                const [x, y] = point;
+                let inside = false;
+                for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                    const [xi, yi] = polygon[i];
+                    const [xj, yj] = polygon[j];
+                    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi)
+                        inside = !inside;
+                }
+                return inside;
             }
-        });
 
-        // Make the canvas transparent to pointer events by default,
-        // Matter will still receive mouse via its own mouse object
-        render.canvas.style.pointerEvents = 'all';
-
-        const mouse = Mouse.create(render.canvas);
-        const mouseConstraint = MouseConstraint.create(engine, {
-            mouse,
-            constraint: { stiffness: 0.2, render: { visible: false } }
-        });
-
-        const walls = [
-            Bodies.rectangle(width / 2, height + 10, width, 20, { isStatic: true, friction: 1, render: { visible: false } }),
-            Bodies.rectangle(width + 10, height / 2, 20, height, { isStatic: true, friction: 1, render: { visible: false } }),
-            Bodies.rectangle(-10, height / 2, 20, height, { isStatic: true, friction: 1, render: { visible: false } })
-        ];
-
-        World.add(engine.world, [...walls, mouseConstraint]);
-        render.mouse = mouse;
-
-        const bodiesMap = new Map();
-
-        function registerElement(id, element, x, y, link) {
-            const w = element.offsetWidth;
-            const h = element.offsetHeight;
-            const body = Bodies.rectangle(x, y, w, h, {
-                friction: 0.5,
-                restitution: 0.2,
-                render: { fillStyle: 'transparent', strokeStyle: 'transparent', lineWidth: 0 }
-            });
-            World.add(engine.world, [body]);
-            bodiesMap.set(id, { element, body, link });
-        }
-
-        registerElement('block-about',    document.getElementById('block-about'),    width * 0.3,  height * 0.1, 'about.html');
-        registerElement('block-work',     document.getElementById('block-work'),     width * 0.3,  height * 0.3, 'portfolio.html');
-        registerElement('block-contact',  document.getElementById('block-contact'),  width * 0.75, height * 0.1, 'contact.html');
-
-        function updateElements() {
-            bodiesMap.forEach(({ element, body }) => {
-                const { x, y } = body.position;
-                const rotation = body.angle * (180 / Math.PI);
-                element.style.transform = `translate(${x - element.offsetWidth / 2}px, ${y - element.offsetHeight / 2}px) rotate(${rotation}deg)`;
-            });
-            requestAnimationFrame(updateElements);
-        }
-
-        let clickStartTime, clickStartPos, isDragging = false;
-
-        render.canvas.addEventListener('mousedown', (e) => {
-            clickStartTime = Date.now();
-            const rect = render.canvas.getBoundingClientRect();
-            clickStartPos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-            isDragging = false;
-        });
-
-        render.canvas.addEventListener('mousemove', (e) => {
-            if (clickStartTime) {
-                const rect = render.canvas.getBoundingClientRect();
-                const cur = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-                if (Math.hypot(cur.x - clickStartPos.x, cur.y - clickStartPos.y) > 10) isDragging = true;
+            function pointInFeature(point, feature) {
+                const geom = feature.geometry;
+                if (geom.type === 'Polygon') {
+                    if (!pointInPolygon(point, geom.coordinates[0])) return false;
+                    for (let i = 1; i < geom.coordinates.length; i++)
+                        if (pointInPolygon(point, geom.coordinates[i])) return false;
+                    return true;
+                } else if (geom.type === 'MultiPolygon') {
+                    for (const poly of geom.coordinates) {
+                        if (pointInPolygon(point, poly[0])) {
+                            let inHole = false;
+                            for (let i = 1; i < poly.length; i++)
+                                if (pointInPolygon(point, poly[i])) { inHole = true; break; }
+                            if (!inHole) return true;
+                        }
+                    }
+                    return false;
+                }
+                return false;
             }
-        });
 
-        render.canvas.addEventListener('mouseup', (e) => {
-            if (!isDragging && Date.now() - clickStartTime < 300) {
-                const rect = render.canvas.getBoundingClientRect();
-                const mx = e.clientX - rect.left;
-                const my = e.clientY - rect.top;
-                bodiesMap.forEach(({ body, link }) => {
-                    const b = body.bounds;
-                    if (mx >= b.min.x && mx <= b.max.x && my >= b.min.y && my <= b.max.y)
-                        window.location.href = link;
+            function generateDots(feature, spacing = 18) {
+                const dots = [];
+                const [[minLng, minLat], [maxLng, maxLat]] = d3.geoBounds(feature);
+                const step = spacing * 0.08;
+                for (let lng = minLng; lng <= maxLng; lng += step)
+                    for (let lat = minLat; lat <= maxLat; lat += step)
+                        if (pointInFeature([lng, lat], feature))
+                            dots.push([lng, lat]);
+                return dots;
+            }
+
+            // ── Render ───────────────────────────────────────────────
+            let landFeatures = null;
+            const allDots = [];
+
+            function render() {
+                ctx.clearRect(0, 0, GLOBE_SIZE, GLOBE_SIZE);
+
+                // Ocean sphere
+                ctx.beginPath();
+                ctx.arc(cx, cy, globeRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#000';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                if (!landFeatures) return;
+
+                // Graticule
+                const graticule = d3.geoGraticule()();
+                ctx.beginPath();
+                path(graticule);
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 0.5;
+                ctx.globalAlpha = 0.15;
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+
+                // Land outlines
+                ctx.beginPath();
+                landFeatures.features.forEach(f => path(f));
+                ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+
+                // Halftone dots
+                allDots.forEach(([lng, lat]) => {
+                    const p = projection([lng, lat]);
+                    if (!p) return;
+                    ctx.beginPath();
+                    ctx.arc(p[0], p[1], 1.1, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#888';
+                    ctx.fill();
                 });
             }
-            isDragging = false;
-            clickStartTime = null;
-        });
 
-        let mouseDown = false;
-        const touchingMouse = () => Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position).length > 0;
+            // ── Auto-rotation + drag ─────────────────────────────────
+            const rotation = [0, 0];
+            let autoRotate = true;
 
-        render.canvas.addEventListener('mousedown', () => { mouseDown = true; if (touchingMouse()) render.canvas.style.cursor = 'grabbing'; });
-        render.canvas.addEventListener('mouseup',   () => { mouseDown = false; render.canvas.style.cursor = touchingMouse() ? 'grab' : 'default'; });
-        Matter.Events.on(engine, 'beforeUpdate', () => {
-            if (!mouseDown) render.canvas.style.cursor = touchingMouse() ? 'grab' : 'default';
-
-            // Track which block (if any) is hovered, toggle .hovered class
-            const hits = Matter.Query.point(engine.world.bodies, mouseConstraint.mouse.position);
-            const hoveredBodyId = hits.length ? hits[0].id : null;
-            bodiesMap.forEach(({ element, body }) => {
-                element.classList.toggle('hovered', body.id === hoveredBodyId);
+            d3.timer(() => {
+                if (autoRotate) {
+                    rotation[0] += 0.06;
+                    projection.rotate(rotation);
+                    render();
+                }
             });
-        });
 
-        // Pass mouse events through canvas to underlying elements when not over a physics body
-        render.canvas.addEventListener('mousemove', (e) => {
-            if (!touchingMouse()) {
-                render.canvas.style.pointerEvents = 'none';
-                setTimeout(() => { render.canvas.style.pointerEvents = 'all'; }, 0);
+            canvas.addEventListener('mousedown', e => {
+                autoRotate = false;
+                const sx = e.clientX, sy = e.clientY;
+                const sr = [...rotation];
+
+                const onMove = mv => {
+                    rotation[0] = sr[0] + (mv.clientX - sx) * 0.5;
+                    rotation[1] = Math.max(-90, Math.min(90, sr[1] - (mv.clientY - sy) * 0.5));
+                    projection.rotate(rotation);
+                    render();
+                };
+                const onUp = () => {
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp);
+                    setTimeout(() => { autoRotate = true; }, 10);
+                };
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+            });
+
+            // ── Connection lines ─────────────────────────────────────
+            const connections = [
+                { id: 'nav-about',     side: 'left',  color: '#2563eb' },
+                { id: 'nav-contact',   side: 'left',  color: '#ff5941' },
+                { id: 'nav-portfolio', side: 'right', color: '#E794DA' },
+            ];
+
+            function drawLines() {
+                const svg = document.getElementById('connection-svg');
+                svg.innerHTML = '';
+
+                const cr = canvas.getBoundingClientRect();
+                const gx = cr.left + cr.width  / 2;
+                const gy = cr.top  + cr.height / 2;
+                const sr = globeRadius * (cr.width / GLOBE_SIZE);
+
+                const ns = 'http://www.w3.org/2000/svg';
+
+                connections.forEach(({ id, side, color }) => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    const r = el.getBoundingClientRect();
+
+                    const bx = side === 'left' ? r.right  : r.left;
+                    const by = r.top + r.height / 2;
+
+                    const dx = gx - bx, dy = gy - by;
+                    const m  = Math.sqrt(dx * dx + dy * dy);
+
+                    const ex = gx - (dx / m) * sr;
+                    const ey = gy - (dy / m) * sr;
+
+                    const line = document.createElementNS(ns, 'line');
+                    line.setAttribute('x1', bx); line.setAttribute('y1', by);
+                    line.setAttribute('x2', ex); line.setAttribute('y2', ey);
+                    line.setAttribute('stroke', color);
+                    line.setAttribute('stroke-width', '1.5');
+                    line.setAttribute('opacity', '0.55');
+                    svg.appendChild(line);
+
+                    const c1 = document.createElementNS(ns, 'circle');
+                    c1.setAttribute('cx', ex); c1.setAttribute('cy', ey);
+                    c1.setAttribute('r', '3.5');
+                    c1.setAttribute('fill', color);
+                    svg.appendChild(c1);
+
+                    const c2 = document.createElementNS(ns, 'circle');
+                    c2.setAttribute('cx', bx); c2.setAttribute('cy', by);
+                    c2.setAttribute('r', '3.5');
+                    c2.setAttribute('fill', color);
+                    svg.appendChild(c2);
+                });
             }
-        });
 
-        const runner = Runner.create();
-        Render.run(render);
-        Runner.run(runner, engine);
-        updateElements();
+            fetch('https://raw.githubusercontent.com/martynafford/natural-earth-geojson/refs/heads/master/110m/physical/ne_110m_land.json')
+                .then(r => r.json())
+                .then(data => {
+                    landFeatures = data;
+                    data.features.forEach(f => {
+                        generateDots(f, 18).forEach(d => allDots.push(d));
+                    });
+                    render();
+                    requestAnimationFrame(drawLines);
+                })
+                .catch(() => {
+                    render();
+                    requestAnimationFrame(drawLines);
+                });
 
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => location.reload(), 300);
-        });
+            requestAnimationFrame(drawLines);
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(drawLines, 150);
+            });
+        })();
     </script>
 </body>
 </html>
+t

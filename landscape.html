@@ -419,6 +419,13 @@
         document.getElementById('lb-next').addEventListener('click',  (e) => { e.stopPropagation(); navigate(1); });
         lb.addEventListener('click', closeLightbox);
 
+        let touchStartX = 0;
+        lb.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+        lb.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+        });
+
         document.addEventListener('keydown', (e) => {
             if (!lb.classList.contains('open')) return;
             if (e.key === 'Escape') closeLightbox();

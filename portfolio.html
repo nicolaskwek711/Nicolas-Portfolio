@@ -115,19 +115,18 @@
             gap: 1.5rem;
             overflow-x: auto;
             overflow-y: hidden;
-            scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             padding: 0 max(2rem, calc(50vw - 280px)) 1.5rem;
             cursor: grab;
             scrollbar-width: none;
+            position: relative;
         }
         .carousel::-webkit-scrollbar { display: none; }
-        .carousel.dragging { cursor: grabbing; scroll-snap-type: none; }
+        .carousel.dragging { cursor: grabbing; }
 
         .card {
             flex: 0 0 auto;
             width: clamp(220px, 32vw, 360px);
-            scroll-snap-align: center;
             text-decoration: none;
             color: #000;
             display: flex;
@@ -275,61 +274,55 @@
 
     <script>
         const carousel = document.getElementById('carousel');
-
-        // Triple the cards for an infinite-loop effect, starting in the middle set.
         const originals = Array.from(carousel.children);
-        const setCount = 3;
-        for (let s = 1; s < setCount; s++) {
-            originals.forEach((c) => carousel.appendChild(c.cloneNode(true)));
+        const n = originals.length;
+
+        // Build [Set A clones] [Set B originals] [Set C clones]
+        originals.slice().reverse().forEach(c => carousel.insertBefore(c.cloneNode(true), carousel.firstChild));
+        originals.forEach(c => carousel.appendChild(c.cloneNode(true)));
+
+        // Cache set width and Set B start — recalculated on init and resize
+        let sw = 0, setBStart = 0;
+        function measure() {
+            setBStart = carousel.children[n].offsetLeft;
+            sw        = carousel.children[2 * n].offsetLeft - setBStart;
         }
 
-        function setSize() {
-            // Width of one full set of original cards (incl. gaps).
-            const cards = carousel.children;
-            if (!cards.length) return 0;
-            const firstSecondSet = cards[originals.length];
-            const firstFirstSet = cards[0];
-            return firstSecondSet.offsetLeft - firstFirstSet.offsetLeft;
+        // Double rAF: first rAF queues after paint, second fires after layout is ready
+        function initScroll() {
+            measure();
+            carousel.scrollLeft = setBStart;
         }
+        requestAnimationFrame(() => requestAnimationFrame(initScroll));
+        window.addEventListener('resize', () => requestAnimationFrame(initScroll));
 
-        function recenter() {
-            const w = setSize();
-            if (!w) return;
-            // If we've drifted past the middle set, wrap around.
-            if (carousel.scrollLeft < w * 0.5) {
-                carousel.scrollLeft += w;
-            } else if (carousel.scrollLeft > w * 1.5) {
-                carousel.scrollLeft -= w;
-            }
-        }
-
-        // Wait for layout, then center on the middle set
-        requestAnimationFrame(() => {
-            const w = setSize();
-            carousel.scrollLeft = w; // jump to middle set
-        });
-
-        carousel.addEventListener('scroll', () => {
-            requestAnimationFrame(recenter);
-        });
-        window.addEventListener('resize', () => {
-            requestAnimationFrame(() => {
-                const w = setSize();
-                carousel.scrollLeft = w;
-            });
-        });
-
-        // Drag-to-scroll for mouse (native touch handles mobile)
+        // Drag state — startScroll must stay in sync when we jump
         let isDown = false, startX = 0, startScroll = 0, moved = 0;
 
-        carousel.addEventListener('mousedown', (e) => {
-            isDown = true;
-            moved = 0;
+        // Infinite loop: jump ±sw when drifting outside Set B,
+        // and keep startScroll in sync so mid-drag jumps don't fight the next mousemove
+        carousel.addEventListener('scroll', () => {
+            if (carousel.scrollLeft < setBStart) {
+                carousel.scrollLeft += sw;
+                startScroll += sw;
+            } else if (carousel.scrollLeft >= setBStart + sw) {
+                carousel.scrollLeft -= sw;
+                startScroll -= sw;
+            }
+        }, { passive: true });
+
+        // Prevent browser's native image/link drag from stealing mouse events
+        carousel.addEventListener('dragstart', e => e.preventDefault());
+
+        // Mouse drag
+        carousel.addEventListener('mousedown', e => {
+            e.preventDefault(); // stops native drag on images & <a> elements
+            isDown = true; moved = 0;
             startX = e.pageX;
             startScroll = carousel.scrollLeft;
             carousel.classList.add('dragging');
         });
-        window.addEventListener('mousemove', (e) => {
+        window.addEventListener('mousemove', e => {
             if (!isDown) return;
             const dx = e.pageX - startX;
             moved = Math.max(moved, Math.abs(dx));
@@ -341,8 +334,8 @@
             carousel.classList.remove('dragging');
         });
 
-        // Suppress card navigation when the user just dragged
-        carousel.addEventListener('click', (e) => {
+        // Block navigation if user dragged instead of clicked
+        carousel.addEventListener('click', e => {
             if (moved > 6) e.preventDefault();
         }, true);
     </script>
